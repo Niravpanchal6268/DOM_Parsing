@@ -1,12 +1,11 @@
 package com.example.domparsing;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -14,6 +13,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,49 +21,60 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class MainActivity extends AppCompatActivity {
 
     LinearLayout linearLayout;
+    RecyclerView recyclerView;
+    ArrayList<model> slist;
+    RecleryAdapterClass adapterClass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        linearLayout =findViewById(R.id.main_layout_id);
+        recyclerView = findViewById(R.id.recycleview_id);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         try {
-            InputStream stream= getAssets().open("file.xml");
-            DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder=factory.newDocumentBuilder();
-            Document d=builder.parse(stream);
-            Element element=d.getDocumentElement();
+            InputStream stream = getAssets().open("file.xml");
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document d = builder.parse(stream);
+            Element element = d.getDocumentElement();
             element.normalize();
 
-            NodeList nodeList=d.getElementsByTagName("students");
-            for (int i=0;i<nodeList.getLength();i++)
-            {
-                TextView t1=new TextView(this);
-                Node node=nodeList.item(i);
-                if (node.getNodeType()==Node.ELEMENT_NODE)
-                {
-                    Element element1=(Element)node;
-                    t1.setTextSize(15);
-                    t1.setTextColor(Color.BLACK);
-                    t1.setText(t1.getText()+"name : "+getValue("name",element1)+"\n");
-                    t1.setText(t1.getText()+"mobile:"+getValue("mobile",element1)+"\n");
-                    t1.setText(t1.getText()+"course:"+getValue("course",element1)+"\n");
-                    linearLayout.addView(t1);
+            NodeList nodeList = d.getElementsByTagName("students");
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+//                TextView t1=new TextView(this);
+                Node node = nodeList.item(i);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element element1 = (Element) node;
+
+                    model obj = new model();
+                    obj.setName(getValue("name", element1));
+                    obj.setCourse(getValue("course", element1));
+                    obj.setMobile(getValue("mobile", element1));
+                    slist.add(obj);
+                    System.out.println(slist);
+                    adapterClass = new RecleryAdapterClass(slist);
+                    recyclerView.setAdapter(adapterClass);
+
                 }
+
+
             }
 
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
     public static String getValue(String name, Element element1) {
-        NodeList node= element1.getElementsByTagName(name).item(0).getChildNodes();
-        Node nodes=node.item(0);
+        NodeList node = element1.getElementsByTagName(name).item(0).getChildNodes();
+        Node nodes = node.item(0);
         return nodes.getNodeValue();
     }
 }

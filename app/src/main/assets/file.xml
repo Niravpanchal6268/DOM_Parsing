@@ -31,15 +31,10 @@
         <mobile>895563741</mobile>
         <course>React</course>
     </students>
-    <students>
-        <name>Kamlesh</name>
-        <mobile>8555693741</mobile>
-        <course>WD</course>
-    </students>
-    <students>
-        <name>Kamlesh</name>
-        <mobile>8555693741</mobile>
-        <course>WD</course>
-    </students>
+<!--    <students>-->
+<!--        <name>Kamlesh</name>-->
+<!--        <mobile>8555693741</mobile>-->
+<!--        <course>WD</course>-->
+<!--    </students>-->
 
 </class>
