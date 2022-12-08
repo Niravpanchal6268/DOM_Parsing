@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout linearLayout;
     RecyclerView recyclerView;
-    ArrayList<model> slist;
+    ArrayList<model> slist=new ArrayList<>();
     RecleryAdapterClass adapterClass;
 
     @Override
