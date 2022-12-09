@@ -1,6 +1,7 @@
 package com.example.domparsing;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             NodeList nodeList = d.getElementsByTagName("students");
 
             for (int i = 0; i < nodeList.getLength(); i++) {
-//                TextView t1=new TextView(this);
+
                 Node node = nodeList.item(i);
 
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     obj.setCourse(getValue("course", element1));
                     obj.setMobile(getValue("mobile", element1));
                     slist.add(obj);
+                    Log.d("list","list"+slist);
                     System.out.println(slist);
                     adapterClass = new RecleryAdapterClass(slist);
                     recyclerView.setAdapter(adapterClass);
